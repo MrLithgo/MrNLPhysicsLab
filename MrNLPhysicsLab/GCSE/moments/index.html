@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turning Forces</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="moments-styles.css">
+</head>
+
+<body>
+    <!-- Navigation placeholder -->
+    <div class="nav-placeholder">
+        Physics Simulation Navigation Placeholder
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Turning Forces</h1>
+        </div>
+
+
+        <div class="simulation-area">
+            <div class="balance-container">
+                <div class="pivot"></div>
+                <div class="beam" id="beam">
+                    <div class="scale"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn teal-btn" id="addMassBtn">Add Mass</button>
+            <button class="btn coral-btn" id="clearAllBtn">Clear All</button>
+        </div>
+
+        <div class="data-table">
+            <div class="table-title">Moments Calculation Table</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Side</th>
+                        <th>Number of Masses</th>
+                        <th>Distance from Pivot</th>
+                        <th>Moment (Mass × Distance)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Left</strong></td>
+                        <td><input type="number" id="leftMasses" min="0" value="0"></td>
+                        <td><input type="number" id="leftDistance" min="0" max="10" value="0"></td>
+                        <td><input type="number" id="leftMoment" placeholder="Calculate yourself"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Right</strong></td>
+                        <td><input type="number" id="rightMasses" min="0" value="0"></td>
+                        <td><input type="number" id="rightDistance" min="0" max="10" value="0"></td>
+                        <td><input type="number" id="rightMoment" placeholder="Calculate yourself"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer placeholder -->
+    <div class="footer-placeholder">
+        Physics Simulation Footer Placeholder
+    </div>
+
+    <script src="moments-script.js"></script>
+</body>
+
+</html>
