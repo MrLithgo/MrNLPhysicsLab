@@ -20,14 +20,14 @@ function init() {
     document.getElementById('rightDistance').addEventListener('input', updateTable);
 }
 
-function getBeamWidth() {
-    const beam = document.getElementById('beam');
-    return beam ? beam.offsetWidth : 980; // fallback if not found
+function getScaleWidth() {
+    const scale = document.querySelector('.scale');
+    return scale ? scale.offsetWidth : 980 * 0.95; // fallback
 }
 
 // Use this function wherever you need the beam width
 function getBeamSpacing() {
-    return getBeamWidth() / 24;
+    return getScaleWidth() / 24;
 }
 
 function createScale() {
@@ -109,7 +109,6 @@ function addMass() {
     updateMassCount();
 }
 
-let BEAM_SPACING = 980 / 24;
 function startDrag(e) {
     draggedMass = e.currentTarget;
     draggedMass.classList.add('dragging');
@@ -164,11 +163,13 @@ function endDrag(e) {
         }
     });
 
+    const spacing = getBeamSpacing();
+
     // Snap to closest zone if within reasonable distance
     if (closestZone && minDistance < 60) {
         const position = parseInt(closestZone.dataset.position);
         const massId = parseInt(draggedMass.dataset.id);
-        draggedMass.style.left = `calc(50% + ${position * BEAM_SPACING}px)`;
+        draggedMass.style.left = `calc(50% + ${position * spacing}px)`;
         draggedMass.style.transform = 'translateX(-50%)';
         draggedMass.style.bottom = '60px';
         draggedMass.dataset.position = position;
@@ -181,7 +182,8 @@ function endDrag(e) {
     } else {
         // Snap back to original position if not dropped on a valid zone
         const massId = parseInt(draggedMass.dataset.id);
-        draggedMass.style.left = `calc(50% + ${massObj.position * BEAM_SPACING}px)`;
+        const massObj = masses.find(m => m.id === massId);
+        draggedMass.style.left = `calc(50% + ${massObj.position * spacing}px)`;
         draggedMass.style.transform = 'translateX(-50%)';
         draggedMass.style.bottom = '60px';
     }
@@ -243,35 +245,47 @@ function updateMassCount() {
     masses.forEach(mass => {
         if (mass.position < 0) leftCount++;
         else if (mass.position > 0) rightCount++;
-        // This function is called when users manually update the table.
-        // Students should use the displayed mass counts and distances to manually calculate the moments (moment = mass × distance) and enter their results in the table fields.
-        document.getElementById('leftMasses').value = leftCount;
-        document.getElementById('rightMasses').value = rightCount;
-    }
+    });
+
+    // Update DOM after counting
+    document.getElementById('leftMasses').value = leftCount;
+    document.getElementById('rightMasses').value = rightCount;
 }
 
 function updateTable() {
-            // This function is called when users manually update the table
-            // The moment calculation is left for students to do manually
-        }
+    // This function is called when users manually update the table
+    // The moment calculation is left for students to do manually
+}
 
 function clearAll() {
-            masses.forEach(mass => {
-                mass.element.remove();
-            });
-            masses = [];
-            massCounter = 1;
-            updateBeamBalance();
-            updateMassCount();
+    masses.forEach(mass => {
+        mass.element.remove();
+    });
+    masses = [];
+    massCounter = 1;
+    updateBeamBalance();
+    updateMassCount();
 
-            // Clear table inputs
-            document.getElementById('leftMasses').value = 0;
-            document.getElementById('rightMasses').value = 0;
-            document.getElementById('leftDistance').value = 0;
-            document.getElementById('rightDistance').value = 0;
-            document.getElementById('leftMoment').value = 0;
-            document.getElementById('rightMoment').value = 0;
-        }
+    // Clear table inputs
+    document.getElementById('leftMasses').value = 0;
+    document.getElementById('rightMasses').value = 0;
+    document.getElementById('leftDistance').value = 0;
+    document.getElementById('rightDistance').value = 0;
+    document.getElementById('leftMoment').value = 0;
+    document.getElementById('rightMoment').value = 0;
+}
 
 // Initialize the simulation when page loads
 document.addEventListener('DOMContentLoaded', init);
+
+window.addEventListener('resize', () => {
+    createScale();
+    createDropZones();
+    masses.forEach(mass => {
+        // Reposition masses based on new spacing
+        const spacing = getBeamSpacing();
+        mass.element.style.left = `calc(50% + ${mass.position * spacing}px)`;
+        mass.element.style.transform = 'translateX(-50%)';
+        mass.element.style.bottom = '60px';
+    });
+});

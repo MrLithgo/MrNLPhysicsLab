@@ -402,24 +402,30 @@ h6 {
 .scale {
     position: absolute;
     bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 90%;
     height: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .scale-mark {
     width: 2px;
     height: 20px;
     background: var(--navy);
-    position: relative;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
 }
 
 .scale-number {
     position: absolute;
     top: 20px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: var(--navy);
-    transform: translateX(-50%);
+
 }
 
 .mass-container {
@@ -559,6 +565,8 @@ input:focus {
 .instructions {
     background: rgba(26, 188, 156, 0.1);
     border: 2px solid var(--teal);
+    background: rgba(26, 188, 156, 0.1);
+    border: 2px solid var(--teal);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 20px;
@@ -566,14 +574,8 @@ input:focus {
     color: var(--navy);
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for simulation area and components */
 @media (max-width: 768px) {
-
-    .beam,
-    .scale {
-        width: 90%;
-    }
-
     .simulation-area {
         height: 400px;
         padding: 20px;
@@ -582,23 +584,10 @@ input:focus {
     .balance-container {
         height: 300px;
     }
-}
 
-@media (max-width: 480px) {
-    .container {
-        padding: 0.5em;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(44, 62, 80, 0.08);
-    }
-
-    .beam,
-    .scale {
-        width: 95%;
-    }
-
-    .simulation-area {
-        height: 350px;
-        padding: 10px;
+    .scale,
+    .beam {
+        width: 90%;
     }
 
     .controls {
@@ -609,5 +598,27 @@ input:focus {
     .btn {
         width: 100%;
         max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        border-radius: 8px;
+        padding: 0.5em;
+        box-shadow: 0 4px 12px rgba(44, 62, 80, 0.08);
+    }
+
+    .simulation-area {
+        height: 350px;
+        padding: 10px;
+    }
+
+    .balance-container {
+        height: 250px;
+    }
+
+    .scale,
+    .beam {
+        width: 95%;
     }
 }
