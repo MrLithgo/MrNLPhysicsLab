@@ -26,8 +26,13 @@ function getScaleWidth() {
 }
 
 // Use this function wherever you need the beam width
+function getBeamWidth() {
+    const beam = document.getElementById('beam');
+    return beam ? beam.offsetWidth * 0.95 : 980 * 0.95; // or adjust factor as needed
+}
+
 function getBeamSpacing() {
-    return getScaleWidth() / 24;
+    return getBeamWidth() / 24; // 24 intervals for 25 marks
 }
 
 function createScale() {
@@ -40,6 +45,7 @@ function createScale() {
         mark.className = 'scale-mark';
         mark.style.position = 'absolute';
         mark.style.left = `${(i + 12) * spacing}px`;
+        mark.style.transform = 'translateX(-50%)';
 
         const number = document.createElement('div');
         number.className = 'scale-number';
