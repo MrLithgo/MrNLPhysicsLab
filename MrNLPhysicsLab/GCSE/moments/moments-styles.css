@@ -404,8 +404,6 @@ h6 {
     bottom: 40px;
     width: 90%;
     height: 20px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 .scale-mark {
