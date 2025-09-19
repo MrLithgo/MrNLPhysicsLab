@@ -14,10 +14,11 @@ function init() {
     document.getElementById('clearAllBtn').addEventListener('click', clearAll);
 
     // Add input event listeners for table
-    document.getElementById('leftMasses').addEventListener('input', updateTable);
-    document.getElementById('rightMasses').addEventListener('input', updateTable);
     document.getElementById('leftDistance').addEventListener('input', updateTable);
     document.getElementById('rightDistance').addEventListener('input', updateTable);
+
+    // Add initial mass to make it more engaging
+    addMass();
 }
 
 function getScaleWidth() {
@@ -25,10 +26,9 @@ function getScaleWidth() {
     return scale ? scale.offsetWidth : 980 * 0.95; // fallback
 }
 
-// Use this function wherever you need the beam width
 function getBeamWidth() {
     const beam = document.getElementById('beam');
-    return beam ? beam.offsetWidth * 0.95 : 980 * 0.95; // or adjust factor as needed
+    return beam ? beam.offsetWidth * 0.95 : 980 * 0.95;
 }
 
 function getBeamSpacing() {
@@ -40,22 +40,30 @@ function createScale() {
     scale.innerHTML = '';
     const spacing = getBeamSpacing();
 
+    // The scale container is already centered, so we position marks relative to its center
+    const scaleWidth = scale.offsetWidth;
+    const centerPosition = scaleWidth / 2;
+
     for (let i = -12; i <= 12; i++) {
         const mark = document.createElement('div');
         mark.className = 'scale-mark';
         mark.style.position = 'absolute';
-        mark.style.left = `${(i + 12) * spacing}px`;
+        mark.style.left = `${centerPosition + (i * spacing)}px`;
         mark.style.transform = 'translateX(-50%)';
 
-        const number = document.createElement('div');
-        number.className = 'scale-number';
-        number.textContent = Math.abs(i);
-        mark.appendChild(number);
+        // Add number labels only for even numbers to reduce clutter
+        if (i % 2 === 0) {
+            const number = document.createElement('div');
+            number.className = 'scale-number';
+            number.textContent = Math.abs(i);
+            number.style.left = `${centerPosition + (i * spacing)}px`;
+            number.style.transform = 'translateX(-50%)';
+            scale.appendChild(number);
+        }
 
         scale.appendChild(mark);
     }
 }
-
 function createDropZones() {
     const container = document.querySelector('.beam');
     document.querySelectorAll('.drop-zone').forEach(zone => zone.remove());
@@ -92,15 +100,15 @@ function addMass() {
     massContainer.appendChild(hook);
     massContainer.appendChild(mass);
 
-    // Position at center (pivot) - hanging from beam
-    massContainer.style.left = '50%';
-    massContainer.style.transform = 'translateX(-50%)';
-    massContainer.style.bottom = '60px';
+    // Add to beam instead of balance-container
+    document.getElementById('beam').appendChild(massContainer);
+
+    // Position at center (pivot)
+    const spacing = getBeamSpacing();
+    massContainer.style.top = `calc(50% + ${0 * spacing}px)`;
 
     // Add drag functionality
     massContainer.addEventListener('mousedown', startDrag);
-
-    document.querySelector('.balance-container').appendChild(massContainer);
 
     // Default weight is 1, can be changed later if needed
     masses.push({
@@ -119,9 +127,24 @@ function startDrag(e) {
     draggedMass = e.currentTarget;
     draggedMass.classList.add('dragging');
 
+    // Store original position for potential snap-back
+    const massId = parseInt(draggedMass.dataset.id);
+    const massObj = masses.find(m => m.id === massId);
+    draggedMass.dataset.originalPosition = massObj.position;
+    draggedMass.dataset.originalLeft = draggedMass.style.left;
+    draggedMass.dataset.originalTransform = draggedMass.style.transform;
+
+    // Calculate offset from mouse position to element's current position
     const rect = draggedMass.getBoundingClientRect();
-    dragOffset.x = e.clientX - rect.left - rect.width / 2;
-    dragOffset.y = e.clientY - rect.top - rect.height / 2;
+    dragOffset.x = e.clientX - rect.left;
+    dragOffset.y = e.clientY - rect.top;
+
+    // Switch to fixed positioning for smooth dragging
+    draggedMass.style.position = 'fixed';
+    draggedMass.style.left = `${e.clientX - dragOffset.x}px`;
+    draggedMass.style.top = `${e.clientY - dragOffset.y}px`;
+    draggedMass.style.transform = 'none';
+    draggedMass.style.zIndex = '1000';
 
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', endDrag);
@@ -137,14 +160,9 @@ function startDrag(e) {
 function drag(e) {
     if (!draggedMass) return;
 
-    const container = document.querySelector('.balance-container');
-    const containerRect = container.getBoundingClientRect();
-
-    const x = e.clientX - containerRect.left - dragOffset.x;
-    const y = e.clientY - containerRect.top - dragOffset.y;
-
-    draggedMass.style.left = `${x}px`;
-    draggedMass.style.bottom = `${container.offsetHeight - y - 70}px`;
+    // Move the mass with the cursor
+    draggedMass.style.left = `${e.clientX - dragOffset.x}px`;
+    draggedMass.style.top = `${e.clientY - dragOffset.y}px`;
 }
 
 function endDrag(e) {
@@ -170,28 +188,37 @@ function endDrag(e) {
     });
 
     const spacing = getBeamSpacing();
+    const massId = parseInt(draggedMass.dataset.id);
+    const massObj = masses.find(m => m.id === massId);
 
-    // Snap to closest zone if within reasonable distance
-    if (closestZone && minDistance < 60) {
+    // Reset to absolute positioning
+    draggedMass.style.position = 'absolute';
+    draggedMass.style.top = 'auto';
+    draggedMass.style.zIndex = '10';
+    draggedMass.style.transform = 'translateX(-50%)';
+
+    // Only snap to zone if within reasonable distance
+    if (closestZone && minDistance < 100) {
         const position = parseInt(closestZone.dataset.position);
-        const massId = parseInt(draggedMass.dataset.id);
-        draggedMass.style.left = `calc(50% + ${position * spacing}px)`;
-        draggedMass.style.transform = 'translateX(-50%)';
-        draggedMass.style.bottom = '60px';
-        draggedMass.dataset.position = position;
 
-        // Update masses array
-        const massObj = masses.find(m => m.id === massId);
-        if (massObj) {
-            massObj.position = position;
-        }
+        // Position the mass correctly relative to the beam
+        draggedMass.style.left = `calc(50% + ${position * spacing}px)`;
+        draggedMass.style.bottom = '60px';
+
+        // Update data
+        draggedMass.dataset.position = position;
+        massObj.position = position;
     } else {
         // Snap back to original position if not dropped on a valid zone
-        const massId = parseInt(draggedMass.dataset.id);
-        const massObj = masses.find(m => m.id === massId);
-        draggedMass.style.left = `calc(50% + ${massObj.position * spacing}px)`;
-        draggedMass.style.transform = 'translateX(-50%)';
+        const originalPosition = parseInt(draggedMass.dataset.originalPosition);
+
+        // Restore original position
+        draggedMass.style.left = `calc(50% + ${originalPosition * spacing}px)`;
         draggedMass.style.bottom = '60px';
+
+        // Update data
+        draggedMass.dataset.position = originalPosition;
+        massObj.position = originalPosition;
     }
 
     draggedMass.classList.remove('dragging');
@@ -228,20 +255,26 @@ function updateBeamBalance() {
     // Rotate beam
     document.getElementById('beam').style.transform = `translateX(-50%) rotate(${rotation}deg)`;
 
-    // Rotate all masses with the beam
+    // Position all masses at their drop zones (no rotation applied to masses)
     masses.forEach(mass => {
-        const currentTransform = mass.element.style.transform || '';
-        // Extract all transforms except rotate
-        const transforms = currentTransform
-            .split(/\)\s*/)
-            .filter(t => t.trim() !== '' && !t.includes('rotate'))
-            .map(t => t.includes(')') ? t + ')' : t)
-            .join(' ');
-        // Ensure translateX is present, default to translateX(-50%) if not
-        const translateMatch = transforms.match(/translateX\([^)]+\)/);
-        const translateX = translateMatch ? translateMatch[0] : 'translateX(-50%)';
-        mass.element.style.transform = `${translateX} rotate(${-rotation}deg)`;
+        const spacing = getBeamSpacing();
+        const massElem = mass.element;
+
+        // Position the mass at the correct drop zone location
+        massElem.style.left = `calc(50% + ${mass.position * spacing}px)`;
+        massElem.style.transform = 'translateX(-50%)'; // No rotation for masses
+        massElem.style.bottom = '60px'; // Reset bottom position
     });
+
+    // Update balance status
+    const balanceStatus = document.getElementById('balanceStatus');
+    if (Math.abs(totalMoment) < 0.1) {
+        balanceStatus.textContent = "Balanced!";
+        balanceStatus.className = "balance-status balanced";
+    } else {
+        balanceStatus.textContent = "Unbalanced";
+        balanceStatus.className = "balance-status unbalanced";
+    }
 }
 
 function updateMassCount() {
@@ -277,8 +310,11 @@ function clearAll() {
     document.getElementById('rightMasses').value = 0;
     document.getElementById('leftDistance').value = 0;
     document.getElementById('rightDistance').value = 0;
-    document.getElementById('leftMoment').value = 0;
-    document.getElementById('rightMoment').value = 0;
+    document.getElementById('leftMoment').value = '';
+    document.getElementById('rightMoment').value = '';
+
+    // Reset balance status
+    document.getElementById('balanceStatus').textContent = '';
 }
 
 // Initialize the simulation when page loads
@@ -294,4 +330,5 @@ window.addEventListener('resize', () => {
         mass.element.style.transform = 'translateX(-50%)';
         mass.element.style.bottom = '60px';
     });
+    updateBeamBalance();
 });
