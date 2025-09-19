@@ -44,7 +44,7 @@ body {
 }
 
 .simulation-area {
-    background: var(--gray-100);
+    background: var(--gray-200);
     border-radius: 15px;
     padding: 40px;
     margin-bottom: 30px;
@@ -69,7 +69,7 @@ body {
     position: absolute;
     bottom: 250px;
     border-radius: 10px;
-    z-index: 5;
+    z-index: 1;
 }
 
 .beam {
@@ -84,6 +84,7 @@ body {
     transition: transform 0.5s ease;
     border-radius: 4px;
     z-index: 2;
+    --counter-rot: 0deg;
 }
 
 .scale {
@@ -120,24 +121,31 @@ body {
 .mass-container {
     position: absolute;
     cursor: grab;
-    transition: all 0.2s ease;
-    z-index: 10;
+    transition: 0.2s ease;
+    z-index: 100;
     transform-origin: top center;
-    bottom: 60px;
-    /* Fixed bottom position */
-    transform: translateX(-50%);
-    /* Center horizontally */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    --scale: 1;
+
+    transform: translateX(-50%) rotate(var(--counter-rot)) scale(var(--scale));
+    transition: transform 0.12s ease;
 }
 
 .mass-container:hover {
-    transform: scale(1.05);
+    transform: translateX(-50%) --scale(1.05);
 }
 
 .mass-container.dragging {
     cursor: grabbing;
-    transform: scale(1.1);
-    z-index: 20;
+
+    z-index: 100;
 }
+
+
 
 .hook {
     width: 3px;
@@ -154,6 +162,18 @@ body {
     margin: 0 auto;
     border-radius: 2px;
     margin-bottom: 0px;
+}
+
+.hook-top,
+.hook,
+.mass,
+.force-arrow {
+    margin: 0;
+    display: block;
+}
+
+.mass {
+    line-height: 1;
 }
 
 .mass {
@@ -272,21 +292,22 @@ input:focus {
 
 .drop-zone {
     position: absolute;
-    background: var(--gray-100);
+    background: var(--gray-200);
     width: 10px;
     height: 10px;
     border-radius: 10px;
     bottom: 3px;
     transform: translateX(-50%);
     border: 2px solid var(--gray-300);
-    z-index: 1;
+    z-index: 3;
 }
 
 .drop-zone.active {
-    background: var(--gray-300);
+    background: var(--gray-100);
     width: 10px;
     height: 10px;
     border: 2px solid var(--gray-300);
+    z-index: 4;
 }
 
 .instructions {
@@ -368,4 +389,308 @@ input:focus {
     td {
         padding: 10px;
     }
+}
+
+
+/* Mass Storage Area */
+.mass-storage {
+    background: var(--gray-100);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid var(--gray-300);
+}
+
+.storage-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.mass-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.mass-option {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: grab;
+
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    border: 0px solid #14967c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.mass-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Mass styles based on value */
+.mass-value-1 {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+    border-color: #a93226;
+    height: 20px;
+    width: 30px;
+}
+
+.mass-value-2 {
+    background: linear-gradient(145deg, #FFB33A, #FFAC1C);
+    border-color: #FFB33A;
+    height: 25px;
+    width: 35px;
+}
+
+.mass-value-3 {
+    background: linear-gradient(145deg, #f1c40f, #f39c12);
+    border-color: #d68910;
+    height: 30px;
+    width: 40px;
+}
+
+.mass-value-4 {
+    background: linear-gradient(145deg, #2ecc71, #27ae60);
+    border-color: #229954;
+    height: 35px;
+    width: 45px;
+}
+
+.mass-value-5 {
+    background: linear-gradient(145deg, #3498db, #2980b9);
+    border-color: #2471a3;
+    height: 40px;
+    width: 50px;
+}
+
+.mass-container,
+.mass-option,
+.mass,
+.hook,
+.hook-top {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.simulation-area,
+.balance-container,
+#beam {
+    overscroll-behavior: contain;
+}
+
+/* Global lock while dragging (toggled in JS) */
+html.drag-lock,
+body.drag-lock {
+    touch-action: none;
+    overscroll-behavior: none;
+}
+
+/* Visual feedback for answers */
+input.answer-correct {
+    border-color: #2ecc71 !important;
+    background: #E9F9F0 !important;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.15);
+}
+
+input.answer-incorrect {
+    border-color: #e74c3c !important;
+    background: #FDEDEC !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
+}
+
+.feedback-mark {
+    margin-left: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.feedback-mark.correct {
+    color: var(--teal);
+}
+
+/* uses your palette */
+.feedback-mark.incorrect {
+    color: var(--coral);
+}
+
+/* Force arrow stack sits right under the mass, no gap */
+.force-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+    /* no gap under the mass */
+    pointer-events: none;
+}
+
+/* Thicker, taller shaft */
+.force-shaft {
+    width: 6px;
+    /* was 4px */
+    background: var(--navy);
+    border-radius: 3px;
+    margin: 0;
+    /* no gap to head */
+    display: block;
+}
+
+/* ▼ Head pointing DOWN, attached to shaft (no seam) */
+.force-head {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    /* wider head */
+    border-right: 10px solid transparent;
+    border-top: 14px solid var(--navy);
+    /* ↓ use border-top to point DOWN */
+    margin-top: -1px;
+    /* overlap 1px to hide any seam */
+    line-height: 0;
+    display: block;
+}
+
+/* Label just below the head */
+.force-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-top: 2px;
+    line-height: 1;
+}
+
+/* Ensure the mass itself doesn’t add a gap above the arrow */
+.mass+.force-arrow {
+    margin-top: 0;
+}
+
+/*/* ===== Advanced Toggle ===== */
+.advanced-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.advanced-toggle__input {
+    /* hide native checkbox but keep it accessible */
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.advanced-toggle__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Track acts as the positioning context */
+.advanced-toggle__track {
+    width: 46px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--gray-300);
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06);
+    position: relative;
+    /* <-- key */
+    overflow: hidden;
+    /* keeps thumb clipped inside */
+}
+
+/* Thumb sits INSIDE the track, so it’s visible */
+.advanced-toggle__thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 2px 6px rgba(44, 62, 80, 0.25);
+    transition: transform 160ms ease;
+}
+
+.advanced-toggle__text {
+    font-size: 0.95rem;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+/* ON state */
+.advanced-toggle__input:checked+.advanced-toggle__label .advanced-toggle__track {
+    background: var(--teal);
+}
+
+.advanced-toggle__input:checked+.advanced-toggle__label .advanced-toggle__thumb {
+    transform: translateX(20px);
+}
+
+/* Focus ring (keyboard) */
+.advanced-toggle__input:focus-visible+.advanced-toggle__label .advanced-toggle__track,
+.advanced-toggle__label:focus-visible .advanced-toggle__track {
+    outline: 3px solid rgba(26, 188, 156, 0.35);
+    outline-offset: 2px;
+}
+
+/* Optional: wider gap row variant you asked for */
+.controls--wide-gap {
+    gap: 64px;
+}
+
+@media (max-width: 768px) {
+    .controls--wide-gap {
+        gap: 16px;
+    }
+}
+
+
+
+/* Toast/snackbar used for temporary notices */
+.sim-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(44, 62, 80, 0.95);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(44, 62, 80, 0.18);
+    font-weight: 600;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 220ms cubic-bezier(.2, .9, .3, 1);
+    z-index: 9999;
+}
+
+/* visible state */
+.sim-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* optional theming class if you want an orange warning style */
+.sim-toast.warn {
+    background: linear-gradient(180deg, #E67E22, #D35400);
 }
