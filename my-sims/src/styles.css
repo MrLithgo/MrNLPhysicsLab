@@ -1,0 +1,123 @@
+:root {
+    --bg: #fff;
+    --surface: #fafafa;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --panel-radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: #111;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid #eee;
+    background: var(--surface);
+}
+
+.main-row {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.left-panel,
+.right-panel {
+    width: 240px;
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 12px;
+    border-radius: var(--panel-radius);
+}
+
+.center-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.controls-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--muted);
+}
+
+.sim-canvas {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: linear-gradient(#fff, #fbfbfb);
+    overflow: hidden;
+    position: relative;
+}
+
+.trolley {
+    position: absolute;
+    width: 60px;
+    height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(#3b82f6, #2563eb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    transform: translateY(-50%);
+    left: 0;
+    top: 50%;
+    user-select: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.button,
+button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* add to src/styles.css (or merge into your existing file) */
+.sim-canvas {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: linear-gradient(#fff, #fbfbfb);
+    overflow: hidden;
+    position: relative;
+}
+
+.trolley {
+    pointer-events: auto;
+}
