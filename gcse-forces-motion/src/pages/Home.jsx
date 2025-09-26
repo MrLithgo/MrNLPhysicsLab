@@ -34,6 +34,7 @@ const Home = () => {
             subtitle: "Trolley and Ramp",
             description: "In this investigation you use light gates to measure the speed of a trolley moving down a ramp.",
             accentColor: "teal",
+            isLegacy: true,  // Mark this as a legacy simulation
             iconSvg: (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" stroke="currentColor" strokeWidth="1.5">
 
@@ -45,7 +46,7 @@ const Home = () => {
 
                 </svg>
             ),
-            onClick: () => simulationAlert('Core Practical 1 - Investigating Motion')
+            linkTo: "/legacy-sims/trolley-ramp.html",
         },
         // Add all your other simulations here
     ];
