@@ -7,8 +7,8 @@ const SimulationCard = ({
     description,
     accentColor,
     iconSvg,
-    linkTo,
-    isLegacy = false  // Add this prop to identify legacy sims
+    isLegacy = false,
+    href = "#"
 }) => {
     return (
         <div className="card">
@@ -22,18 +22,18 @@ const SimulationCard = ({
                 <p>{description}</p>
 
                 {isLegacy ? (
-                    // For legacy simulations (external HTML files)
+                    // For legacy simulations - use <a> tag with href
                     <a
-                        href={linkTo}
+                        href={href}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`btn ${accentColor}-btn`}
                     >
-                        Launch Legacy Simulation
+                        Launch Simulation
                     </a>
                 ) : (
-                    // For React simulations (internal routes)
-                    <Link to={linkTo} className={`btn ${accentColor}-btn`}>
+                    // For future React simulations - use <Link> component
+                    <Link to={href} className={`btn ${accentColor}-btn`}>
                         Launch Simulation
                     </Link>
                 )}

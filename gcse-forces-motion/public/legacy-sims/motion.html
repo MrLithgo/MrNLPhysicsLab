@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigating Motion</title>
+    <link rel="stylesheet" href="motion-styles.css">
+</head>
+
+<body>
+    <button id="help-button" style="position: absolute; ">Help</button>
+    <h1>Investigating Motion</h1>
+
+    <div class="simulation-container">
+        <div class="controls">
+            <div class="control-group">
+                <label for="height">Drop Height (cm):</label>
+                <input type="number" id="height" min="0" max="400" value="100" step="10"
+                    oninput="this.value = Math.min(400, Math.max(0, this.value))">
+            </div>
+
+            <div class="control-group">
+                <label for="cone-mass">Cone Mass (g):</label>
+                <input type="number" id="cone-mass" min="1" max="10" value="5" step="1">
+            </div>
+
+            <div class="control-group">
+                <label>Controls:</label>
+                <button id="start-btn">Start & Drop</button>
+                <button id="stop-btn" disabled>Stop Timer</button>
+                <button id="reset-btn">Reset</button>
+                <button id="clear-results-btn">Clear Results</button>
+            </div>
+        </div>
+
+        <div class="timer" id="timer">Time: 0.00s</div>
+
+        <div id="simulation-area">
+            <div id="cone"></div>
+            <div id="ground"></div>
+            <div id="ruler">
+                <div id="ruler-scale">
+                    <div class="cm-mark"></div>
+                </div>
+                <div id="ruler-handle">☰</div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+    <div class="results">
+        <h3>Results</h3>
+        <table id="results-table">
+            <thead>
+                <tr>
+                    <th>Trial</th>
+                    <th>Height (cm)</th>
+                    <th>Mass (g)</th>
+                    <th>Time (s)</th>
+
+                </tr>
+            </thead>
+            <tbody id="results-body">
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <script src="motion-script.js"></script>
+</body>
+
+</html>
