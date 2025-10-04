@@ -18,9 +18,15 @@
     <main class="page-body">
         <div class="container">
             <header class="page-header">
-                <h1 class="page-title">Newton's Second Law</h1>
-                <button class="quiz-btn">Quiz yourself!</button>
+                <div class="header-grid">
+                    <div class="header-left"><!-- intentionally empty, keeps center aligned --></div>
+                    <h1 class="page-title">Newton's Second Law</h1>
+                    <div class="header-actions">
+                        <button class="btn gold-btn">Quiz yourself!</button>
+                    </div>
+                </div>
             </header>
+
 
             <section class="experiment-area">
                 <div class="cols">
@@ -59,7 +65,7 @@
                                     <circle cx="20" cy="50" r="8" fill="#2C3E50" />
                                     <circle cx="60" cy="50" r="8" fill="#2C3E50" />
                                     <text x="40" y="30" text-anchor="middle" fill="white" font-weight="bold"
-                                        id="massDisplay">1.0 kg</text>
+                                        id="massDisplay">2.0 kg</text>
                                 </svg>
 
                                 <div id="forceArrow" class="force-arrow">
@@ -78,9 +84,9 @@
                         <div class="control-group">
                             <label class="label">Mass (m)</label>
                             <div class="range-row">
-                                <input type="range" id="massSlider" min="1.0" max="3.0" value="1.0" step="0.1"
+                                <input type="range" id="massSlider" min="1.0" max="3.0" value="2.0" step="0.1"
                                     class="range">
-                                <span id="massValue" class="value">1.0 kg</span>
+                                <span id="massValue" class="value">2.0 kg</span>
                             </div>
                         </div>
 
@@ -94,8 +100,8 @@
                         </div>
 
                         <div class="button-stack">
-                            <button id="startBtn" class="btn start">Start Experiment</button>
-                            <button id="resetBtn" class="btn reset">Reset</button>
+                            <button id="startBtn" class="btn teal-btn">Start Experiment</button>
+                            <button id="resetBtn" class="btn navy-btn">Reset</button>
                         </div>
                     </aside>
                 </div>
@@ -119,6 +125,7 @@
                             <li>Repeat three times and take an average</li>
                             <li>Increase the force by 0.1 N and repeat until at least 5 different forces have been used
                             </li>
+                            <li>Plot a graph of Force (N) against Average Acceleration (m/s²)</li>
                             <li>You can gather more data for a trolley of a different mass</li>
                         </ol>
                     </div>
@@ -143,14 +150,24 @@
                             <tbody id="resultsTable"></tbody>
                         </table>
                     </div>
-
+                    <br></br>
                     <div class="panel-footer">
-                        <button id="clearResultsBtn" class="btn small soft">Clear All Results</button>
+                        <button id="clearResultsBtn" class="btn  coral-btn">Clear All Results</button>
                     </div>
                 </section>
 
                 <!-- Student Worksheet -->
                 <section class="panel worksheet">
+
+
+                    <div class="panel-body">
+                        <h3>How to Calculate Acceleration:</h3>
+                        <p>You can calculate acceleration using:</p>
+                        <ul>
+                            <li>acceleration = change in velocity / time</li>
+                        </ul>
+                    </div>
+                    <br></br> <br></br>
                     <h3>Newton's Second Law</h3>
                     <div class="formula">
                         <div class="formula-pill coral">F</div>
@@ -159,15 +176,8 @@
                         <div class="formula-eq">×</div>
                         <div class="formula-pill gold">a</div>
                     </div>
-
-                    <div class="panel-body">
-                        <h4>How to Calculate Acceleration:</h4>
-                        <p>You can calculate acceleration using:</p>
-                        <ul>
-                            <li>acceleration = change in velocity / time</li>
-                        </ul>
-                    </div>
                 </section>
+
 
             </section>
         </div>
