@@ -9,9 +9,9 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     background: linear-gradient(135deg, #ECF0F1 0%, #D6DBDF 100%);
-    color: #2C3E50;
+    color: var(--navy);
     line-height: 1.6;
     min-height: 100vh;
     padding: 20px;
@@ -126,6 +126,89 @@ h6 {
     position: relative;
 }
 
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    /* allows wrapping on small screens */
+    padding: 8px 0;
+}
+
+.header-actions {
+    order: 2;
+}
+
+/* actions to the right */
+.page-title {
+    order: 1;
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+/* title centered when wide */
+@media(max-width:767px) {
+    .page-title {
+        text-align: left;
+        width: 100%;
+    }
+
+    .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.header-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    /* left spacer | center title (auto) | right actions */
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+/* center the title inside the middle column */
+.page-title {
+    margin: 0;
+    justify-self: center;
+    /* ensures exact centering of the title cell */
+    font-size: clamp(20px, 2.2vw, 28px);
+    font-weight: 700;
+}
+
+/* position actions at the end of the right column */
+.header-actions {
+    justify-self: end;
+}
+
+/* mobile: stack nicely */
+@media (max-width: 767px) {
+    .header-grid {
+        grid-template-columns: 1fr;
+        /* stack everything */
+        grid-auto-flow: row;
+        text-align: left;
+    }
+
+    .page-title {
+        justify-self: start;
+    }
+
+    .header-actions {
+        justify-self: start;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .quiz-btn {
+        width: 100%;
+        max-width: 420px;
+    }
+}
+
 .page-header h1 {
     font-size: 2rem;
     font-weight: 700;
@@ -154,7 +237,7 @@ h6 {
 
 /* Simulation styles */
 .simulation-area {
-    background: #f7fafc;
+    background: var(--gray-100);
     border-radius: 10px;
     padding: 30px;
     margin-bottom: 30px;
