@@ -416,6 +416,7 @@ li {
 
 .coral-btn:hover {
     background-color: rgba(231, 76, 60, 0.7);
+    transform: translateY(-2px);
 }
 
 .navy-btn {

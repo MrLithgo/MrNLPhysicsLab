@@ -48,6 +48,65 @@ h6 {
 }
 
 /* Button styles */
+.teal-btn {
+    background-color: rgba(26, 188, 156, 0.8);
+    color: white;
+}
+
+.teal-btn:hover {
+    background-color: rgba(26, 188, 156, 0.7);
+    transform: translateY(-2px);
+}
+
+.gold-btn {
+    background-color: rgba(241, 196, 15, 1);
+    color: var(--navy);
+    opacity: 0.9;
+}
+
+.gold-btn:hover {
+    background-color: rgba(241, 196, 15, 0.5);
+    transform: translateY(-10%);
+    opacity: .98;
+}
+
+.coral-btn {
+    background-color: rgba(231, 76, 60, 0.8);
+    color: white;
+}
+
+.coral-btn:hover {
+    background-color: rgba(231, 76, 60, 0.7);
+    transform: translateY(-2px);
+}
+
+.navy-btn {
+    background-color: rgba(44, 62, 80, 0.8);
+    color: white;
+}
+
+.navy-btn:hover {
+    background-color: rgba(44, 62, 80, 0.7);
+    transform: translateY(-2px);
+}
+
+.slate-btn {
+    background-color: rgba(127, 140, 141, 0.8);
+    color: white;
+}
+
+.slate-btn:hover {
+    background-color: rgba(127, 140, 141, 0.7);
+    transform: translateY(-2px);
+}
+
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+}
+
 .btn {
     display: inline-block;
     padding: 0.5rem 1rem;
@@ -58,45 +117,28 @@ h6 {
     transition: all 0.2s;
     cursor: pointer;
     border: 1px solid transparent;
-    width: 100%;
+    width: auto;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 24px;
 }
 
-.teal-btn {
-    background-color: rgba(26, 188, 156, 0.8);
-    color: white;
+
+
+
+.btn.small {
+    padding: 6px 10px;
+    font-size: 13px;
 }
 
-.teal-btn:hover {
-    background-color: rgba(26, 188, 156, 0.7);
+.btn.soft {
+    background: var(--softgray);
+    color: var(--slate);
 }
 
-.gold-btn {
-    background-color: rgba(241, 196, 15, 0.8);
-    color: var(--navy);
+.btn.soft:hover {
+    background: var(--gray-200);
 }
-
-.gold-btn:hover {
-    background-color: rgba(241, 196, 15, 0.7);
-}
-
-.coral-btn {
-    background-color: rgba(231, 76, 60, 0.8);
-    color: white;
-}
-
-.coral-btn:hover {
-    background-color: rgba(231, 76, 60, 0.7);
-}
-
-.navy-btn {
-    background-color: rgba(44, 62, 80, 0.8);
-    color: white;
-}
-
-.navy-btn:hover {
-    background-color: rgba(44, 62, 80, 0.7);
-}
-
 
 
 /* ===== COMPONENT STYLES ===== */
